@@ -1,0 +1,6 @@
+#FileLock
+#Fri Oct 16 17:02:34 ART 2026
+hostName=192.168.0.12
+id=1a1464f1204ac35eb8b96699a3a5726ac7e4a5d8672
+method=file
+server=192.168.0.12\:49858

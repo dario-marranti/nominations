@@ -1,0 +1,60 @@
+sequenceDiagram
+    title ABM SIMULADO - Flujo de nominaciones
+    participant C as Cliente
+    participant API as NominationController
+    participant S as NominationService
+    participant DB as H2 (nominations)
+
+    rect rgba(100, 149, 237, 0.12)
+    Note over C,DB: Caso 1 - Alta de nominacion
+    C->>API: POST /v1/nominations {customer_id, account_id, card_id, alias, request_id}
+    API->>S: create(request)
+    S->>DB: findByRequestId(request_id)
+    DB-->>S: vacio (si existe, devuelve el mismo uuid)
+    S->>DB: INSERT (uuid generado, ready_at = null)
+    DB-->>S: id autogenerado
+    S-->>API: uuid
+    API-->>C: 202 Accepted {uuid, status: PENDING} + Location
+    end
+
+    rect rgba(255, 193, 7, 0.12)
+    Note over C,DB: Caso 2 - Primer GET: se sortea la demora
+    C->>API: GET /v1/nominations/{uuid}
+    API->>S: poll(uuid)
+    S->>DB: findByUuid(uuid)
+    DB-->>S: nominacion (ready_at = null)
+    S->>S: delay = random(0..30 s)
+    S->>DB: UPDATE ready_at = ahora + delay
+    S-->>API: nominacion (no lista)
+    API-->>C: 200 OK {uuid, status: PENDING, message: "Sin novedades"}
+    end
+
+    rect rgba(255, 193, 7, 0.12)
+    Note over C,DB: Caso 3 - GET antes de cumplirse la demora
+    C->>API: GET /v1/nominations/{uuid}
+    API->>S: poll(uuid)
+    S->>DB: findByUuid(uuid)
+    DB-->>S: nominacion (ahora < ready_at)
+    S-->>API: nominacion (no lista)
+    API-->>C: 200 OK {uuid, status: PENDING, message: "Sin novedades"}
+    end
+
+    rect rgba(76, 175, 80, 0.12)
+    Note over C,DB: Caso 4 - GET despues de cumplirse la demora
+    C->>API: GET /v1/nominations/{uuid}
+    API->>S: poll(uuid)
+    S->>DB: findByUuid(uuid)
+    DB-->>S: nominacion (ahora >= ready_at)
+    S-->>API: nominacion (lista)
+    API-->>C: 201 Created {uuid, status: CREATED, id}
+    end
+
+    rect rgba(244, 67, 54, 0.12)
+    Note over C,DB: Caso 5 - GET con uuid inexistente
+    C->>API: GET /v1/nominations/{uuid-inexistente}
+    API->>S: poll(uuid)
+    S->>DB: findByUuid(uuid)
+    DB-->>S: vacio
+    S-->>API: Optional.empty
+    API-->>C: 404 Not Found (ProblemDetail)
+    end

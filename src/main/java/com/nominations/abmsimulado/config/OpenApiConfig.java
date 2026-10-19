@@ -1,4 +1,4 @@
-package com.example.abmsimulado.config;
+package com.nominations.abmsimulado.config;
 
 import io.swagger.v3.oas.models.OpenAPI;
 import io.swagger.v3.oas.models.info.Info;

@@ -1,0 +1,8 @@
+/Users/dariomarranti/Develop/prueba_tecnica_apis_prisma/nominations/src/main/java/com/nominations/abmsimulado/AbmSimuladoApplication.java
+/Users/dariomarranti/Develop/prueba_tecnica_apis_prisma/nominations/src/main/java/com/nominations/abmsimulado/api/NominationController.java
+/Users/dariomarranti/Develop/prueba_tecnica_apis_prisma/nominations/src/main/java/com/nominations/abmsimulado/api/NominationRequest.java
+/Users/dariomarranti/Develop/prueba_tecnica_apis_prisma/nominations/src/main/java/com/nominations/abmsimulado/api/NominationResponse.java
+/Users/dariomarranti/Develop/prueba_tecnica_apis_prisma/nominations/src/main/java/com/nominations/abmsimulado/config/OpenApiConfig.java
+/Users/dariomarranti/Develop/prueba_tecnica_apis_prisma/nominations/src/main/java/com/nominations/abmsimulado/domain/Nomination.java
+/Users/dariomarranti/Develop/prueba_tecnica_apis_prisma/nominations/src/main/java/com/nominations/abmsimulado/domain/NominationRepository.java
+/Users/dariomarranti/Develop/prueba_tecnica_apis_prisma/nominations/src/main/java/com/nominations/abmsimulado/service/NominationService.java
